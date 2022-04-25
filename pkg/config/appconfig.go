@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	_ "github.com/joho/godotenv/autoload"
+	_ "github.com/joho/godotenv/autoload" // Loading .env file
 )
 
 func GetProducts() []string {
