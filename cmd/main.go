@@ -50,7 +50,6 @@ func main() {
 		err := matchListener.Listen()
 		if err != nil {
 			log.Println("listening:", err)
-			return
 		}
 	}()
 
