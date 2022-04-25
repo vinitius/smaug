@@ -4,14 +4,12 @@ help: ## Show Help
 mock-generate: ## Generate mocks
 
 tools: ## Basic helper tools
-	go get golang.org/x/tools/cmd/goimports
+	go install golang.org/x/tools/cmd/goimports@latest
+	go install mvdan.cc/gofumpt@latest
 
-imports: ## Organize imports
-	rm -rf vendor
+fmt: ## Format files
 	goimports -l -w .
-
-fumpt: ## Format files
-	gofumpt -w .
+	gofumpt -l -w .
 
 test: ## Run unit tests
 	touch count.out
@@ -26,9 +24,5 @@ lint: ## Run linter
 
 create-env: ## Create sample env file locally
 	cp .env.docker.sample .env # Create .env file
-
-wire-generate: ## Generate di container
-	cd cmd/di ;\
-    ${GOPATH}/bin/wire
 
 .PHONY: test

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/vinitius/smaug/pkg/config"
 	"log"
 	"net/url"
 	"os"
@@ -17,12 +18,13 @@ func main() {
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
 
-	// Dependencies & Configs
-	products := []string{"BTC-USD", "ETH-USD", "ETH-BTC"}
-	channels := []string{"matches"}
+	// Configs & Dependencies
+	u := url.URL{Scheme: "wss", Host: config.GetCoinbaseServiceAddress()}
+	windowSize := config.GetSlidingWindowSize()
+	products := config.GetProducts()
+	channels := config.GetChannels()
 	socket := websocket.NewCoinbaseWebSocket()
-	matchListener := listeners.NewMatchListener(&socket, publishers.NewLogPublisher(), 200, products)
-	u := url.URL{Scheme: "wss", Host: "ws-feed.exchange.coinbase.com"}
+	matchListener := listeners.NewMatchListener(&socket, publishers.NewLogPublisher(), windowSize, products)
 
 	// Connect
 	cleanup, err := socket.Connect(u.String())
