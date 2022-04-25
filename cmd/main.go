@@ -1,12 +1,13 @@
 package main
 
 import (
-	"github.com/vinitius/smaug/pkg/config"
 	"log"
 	"net/url"
 	"os"
 	"os/signal"
 	"time"
+
+	"github.com/vinitius/smaug/pkg/config"
 
 	"github.com/vinitius/smaug/internal/listeners"
 	"github.com/vinitius/smaug/internal/publishers"
@@ -29,14 +30,14 @@ func main() {
 	// Connect
 	cleanup, err := socket.Connect(u.String())
 	if err != nil {
-		log.Panicf("could not connect to socket: %s", err.Error())
+		log.Fatalf("could not connect to socket: %s", err.Error())
 	}
 	defer cleanup()
 
 	// Subscribe
 	err = socket.Subscribe(channels, products)
 	if err != nil {
-		log.Panicf("could not subscribe to channels: %s", err.Error())
+		log.Fatalf("could not subscribe to channels: %s", err.Error())
 	}
 
 	// Listen for `match` events

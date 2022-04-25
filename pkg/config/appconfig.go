@@ -1,17 +1,18 @@
 package config
 
 import (
-	_ "github.com/joho/godotenv/autoload"
 	"log"
 	"os"
 	"strconv"
 	"strings"
+
+	_ "github.com/joho/godotenv/autoload"
 )
 
 func GetProducts() []string {
-	products, found := os.LookupEnv("COINBASE_PRODUCTS")
+	products, found := os.LookupEnv("COINBASE_PRODUCT_IDS")
 	if !found {
-		log.Panicf("could not find required config: COINBASE_PRODUCTS")
+		log.Fatalf("could not find required config: COINBASE_PRODUCT_IDS")
 	}
 
 	return strings.Split(products, "|")
@@ -20,7 +21,7 @@ func GetProducts() []string {
 func GetChannels() []string {
 	channels, found := os.LookupEnv("COINBASE_CHANNELS")
 	if !found {
-		log.Panicf("could not find required config: COINBASE_CHANNELS")
+		log.Fatalf("could not find required config: COINBASE_CHANNELS")
 	}
 
 	return strings.Split(channels, "|")
@@ -29,7 +30,7 @@ func GetChannels() []string {
 func GetCoinbaseServiceAddress() string {
 	addr, found := os.LookupEnv("COINBASE_SERVICE_ADDRESS")
 	if !found {
-		log.Panicf("could not find required config: COINBASE_SERVICE_ADDRESS")
+		log.Fatalf("could not find required config: COINBASE_SERVICE_ADDRESS")
 	}
 
 	return addr
@@ -38,12 +39,12 @@ func GetCoinbaseServiceAddress() string {
 func GetSlidingWindowSize() int {
 	size, found := os.LookupEnv("SLIDING_WINDOW_SIZE")
 	if !found {
-		log.Panicf("could not find required config: SLIDING_WINDOW_SIZE")
+		log.Fatalf("could not find required config: SLIDING_WINDOW_SIZE")
 	}
 
 	asInt, err := strconv.Atoi(size)
 	if err != nil {
-		log.Panicf("SLIDING_WINDOW_SIZE must be a valid number: %s", err.Error())
+		log.Fatalf("SLIDING_WINDOW_SIZE must be a valid number: %s", err.Error())
 	}
 
 	return asInt
