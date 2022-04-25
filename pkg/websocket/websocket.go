@@ -27,7 +27,7 @@ func (c *CoinbaseWebSocket) Connect(url string) (func(), error) {
 	log.Printf("connecting to %s", url)
 	conn, _, err := websocket.DefaultDialer.Dial(url, nil)
 	if err != nil {
-		log.Fatal("dial:", err)
+		return nil, err
 	}
 	c.conn = conn
 	return func() {
@@ -47,13 +47,11 @@ func (c CoinbaseWebSocket) Subscribe(channels, productIDs []string) error {
 		Channels:   channels,
 	})
 	if err != nil {
-		log.Println("subscribe parse err:", err)
 		return err
 	}
 
 	err = c.conn.WriteMessage(websocket.TextMessage, sub)
 	if err != nil {
-		log.Println("write:", err)
 		return err
 	}
 
@@ -63,7 +61,6 @@ func (c CoinbaseWebSocket) Subscribe(channels, productIDs []string) error {
 func (c CoinbaseWebSocket) Close() error {
 	err := c.conn.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""))
 	if err != nil {
-		log.Println("write close:", err)
 		return err
 	}
 

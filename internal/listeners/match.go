@@ -15,7 +15,7 @@ const (
 )
 
 type MatchListener struct {
-	pub        publishers.VWAPPublisher
+	publisher  publishers.VWAPPublisher
 	socket     websocket.VWAPWebSocket
 	aggregates map[string]aggregates.VWAPAggregate
 }
@@ -26,7 +26,7 @@ func NewMatchListener(socket websocket.VWAPWebSocket, pub publishers.VWAPPublish
 		index[id] = &aggregates.MatchAggregate{ProductID: id, SlidingWindowSize: slidingWindowSize}
 	}
 
-	return MatchListener{socket: socket, pub: pub, aggregates: index}
+	return MatchListener{socket: socket, publisher: pub, aggregates: index}
 }
 
 func (l MatchListener) Listen() {
@@ -57,13 +57,13 @@ func (l MatchListener) handle(match domain.Match) {
 		return
 	}
 
-	err := match.ParseValues()
+	err := match.Validate()
 	if err != nil {
-		log.Println("could not parse incoming values: ", err)
+		log.Println("could not validate incoming match values: ", err)
 		return
 	}
 
 	aggregate.CheckWindowSize()
 	aggregate.Add(match)
-	l.pub.Publish(match.ProductID, aggregate.VWAP())
+	l.publisher.Publish(aggregate)
 }

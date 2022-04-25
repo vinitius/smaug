@@ -7,6 +7,8 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/vinitius/smaug/pkg/broker"
+
 	"github.com/vinitius/smaug/pkg/config"
 
 	"github.com/vinitius/smaug/internal/listeners"
@@ -25,7 +27,8 @@ func main() {
 	products := config.GetProducts()
 	channels := config.GetChannels()
 	socket := websocket.NewCoinbaseWebSocket()
-	matchListener := listeners.NewMatchListener(&socket, publishers.NewLogPublisher(), windowSize, products)
+	messageClient := broker.NewStdoutBrokerClient()
+	matchListener := listeners.NewMatchListener(&socket, publishers.NewLocalPublisher(messageClient), windowSize, products)
 
 	// Connect
 	cleanup, err := socket.Connect(u.String())
@@ -56,7 +59,7 @@ func main() {
 			log.Println("gracefully shutting down")
 			err := socket.Close()
 			if err != nil {
-				log.Println("close:", err)
+				log.Println("close error:", err)
 				return
 			}
 			select {

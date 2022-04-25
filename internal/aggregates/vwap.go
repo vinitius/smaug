@@ -8,6 +8,7 @@ type VWAPAggregate interface {
 	Add(value interface{})
 	CheckWindowSize()
 	VWAP() float64
+	ID() string
 }
 
 type MatchAggregate struct {
@@ -40,4 +41,8 @@ func (a *MatchAggregate) CheckWindowSize() {
 
 func (a MatchAggregate) VWAP() float64 {
 	return a.priceTotal / a.sizeTotal
+}
+
+func (a MatchAggregate) ID() string {
+	return a.ProductID
 }

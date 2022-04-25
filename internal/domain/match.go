@@ -17,7 +17,7 @@ type Match struct {
 	ActualSize  float64 `json:"-"`
 }
 
-func (m *Match) ParseValues() error {
+func (m *Match) Validate() error {
 	var err error
 	m.ActualPrice, err = strconv.ParseFloat(m.Price, 64)
 	if err != nil {
