@@ -66,6 +66,27 @@ Run tests and generate coverage report:
 make test
 ```
 
+# Lint
+
+Run lint:
+
+```
+make lint
+```
+
+# Tools
+
+Download build tools:
+
+```
+make tools
+```
+Organize and format code:
+
+```
+make fmt
+```
+
 # Docs
 You can find a more detailed overview regarding assumptions and decisions over [here](docs/).
 

@@ -35,4 +35,6 @@ docs
 # Assumptions
  - **No Integration Tests**: since the coinbase API is public and always available, a whole integration suite to emulate a WS server seemed unnecessary, given the business logic was already validated by the unit tests.
  - **O11y**: it would be crucial to instrument the application in a production-like scenario.
+ - **Logs**: a proper log lib such as [Zap](https://github.com/uber-go/zap) could be used to structure logs and help collect them in a better way.
+ - **Dependencies**: a proper Dependency Injection framework such as [Wire](https://github.com/google/wire) could be used to reduce boilerplate code upon startup.
 
