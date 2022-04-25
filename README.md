@@ -71,3 +71,9 @@ You can find a more detailed overview regarding assumptions and decisions over [
 
 # Profiling
 `macOS Catalina i7 16GB`
+```
+Type: inuse_space
+Time: Apr 25, 2022 at 5:34pm (-04)
+Nodes accounting for 1744.35kB, 96.72% of 1803.53kB total Dropped 51 nodes (cum <= 9.02kB)
+```
+More details in [here](docs/smaug_mem_profile.pdf).
