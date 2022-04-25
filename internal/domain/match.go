@@ -1,6 +1,7 @@
 package domain
 
 import (
+	"fmt"
 	"strconv"
 )
 
@@ -27,6 +28,10 @@ func (m *Match) Validate() error {
 	m.ActualSize, err = strconv.ParseFloat(m.Size, 64)
 	if err != nil {
 		return err
+	}
+
+	if m.ActualSize <= 0 || m.ActualPrice <= 0 {
+		return fmt.Errorf("invalid Match values for price and/or size: %v", m)
 	}
 
 	return nil

@@ -1,6 +1,8 @@
 package aggregates
 
 import (
+	"log"
+
 	"github.com/vinitius/smaug/internal/domain"
 )
 
@@ -22,6 +24,7 @@ type MatchAggregate struct {
 func (a *MatchAggregate) Add(value interface{}) {
 	match, ok := value.(domain.Match)
 	if !ok {
+		log.Println("could not cast incoming match")
 		return
 	}
 
