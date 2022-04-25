@@ -33,7 +33,7 @@ func (a *MatchAggregate) Add(value interface{}) {
 
 func (a *MatchAggregate) CheckWindowSize() {
 	if len(a.matches) == a.SlidingWindowSize {
-		log.Printf("==VWAP Reached the window limit of %d occurences: removing the oldest for %s\n", a.SlidingWindowSize, a.ProductID)
+		log.Printf("==VWAP Reached the window limit of %d occurrences: removing the oldest for %s\n", a.SlidingWindowSize, a.ProductID)
 		firstMatch := a.matches[0]
 		a.sizeTotal -= firstMatch.ActualSize
 		a.priceTotal -= firstMatch.ActualPrice * firstMatch.ActualSize

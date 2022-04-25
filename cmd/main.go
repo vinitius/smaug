@@ -9,6 +9,7 @@ import (
 
 	"github.com/vinitius/smaug/internal/listeners"
 	"github.com/vinitius/smaug/internal/publishers"
+
 	"github.com/vinitius/smaug/pkg/websocket"
 )
 
@@ -17,9 +18,10 @@ func main() {
 	signal.Notify(interrupt, os.Interrupt)
 
 	// Dependencies & Configs
-	socket := websocket.NewCoinbaseWebSocket()
 	products := []string{"BTC-USD", "ETH-USD", "ETH-BTC"}
 	channels := []string{"matches"}
+	socket := websocket.NewCoinbaseWebSocket()
+	matchListener := listeners.NewMatchListener(&socket, publishers.NewLogPublisher(), 200, products)
 	u := url.URL{Scheme: "wss", Host: "ws-feed.exchange.coinbase.com"}
 
 	// Connect
@@ -39,8 +41,7 @@ func main() {
 	done := make(chan bool)
 	go func() {
 		defer close(done)
-		matchListener := listeners.NewMatchListener(publishers.NewLogPublisher(), 200, products)
-		matchListener.Listen(&socket)
+		matchListener.Listen()
 	}()
 
 	// Control Panel

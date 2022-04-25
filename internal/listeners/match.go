@@ -16,22 +16,23 @@ const (
 
 type MatchListener struct {
 	pub        publishers.VWAPPublisher
+	socket     websocket.VWAPWebSocket
 	aggregates map[string]aggregates.VWAPAggregate
 }
 
-func NewMatchListener(pub publishers.VWAPPublisher, slidingWindowSize int, productIDs []string) MatchListener {
+func NewMatchListener(socket websocket.VWAPWebSocket, pub publishers.VWAPPublisher, slidingWindowSize int, productIDs []string) MatchListener {
 	index := make(map[string]aggregates.VWAPAggregate, len(productIDs))
 	for _, id := range productIDs {
 		index[id] = &aggregates.MatchAggregate{ProductID: id, SlidingWindowSize: slidingWindowSize}
 	}
 
-	return MatchListener{pub: pub, aggregates: index}
+	return MatchListener{socket: socket, pub: pub, aggregates: index}
 }
 
-func (l MatchListener) Listen(conn websocket.VWAPWebSocket) {
+func (l MatchListener) Listen() {
 	for {
 		var match domain.Match
-		_, rawMessage, err := conn.Read()
+		_, rawMessage, err := l.socket.Read()
 		if err != nil {
 			log.Println("error reading message: ", err)
 			return
